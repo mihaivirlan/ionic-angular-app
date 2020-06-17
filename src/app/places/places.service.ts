@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, of } from 'rxjs';
+import { take, map, tap, switchMap } from 'rxjs/operators';
 
 import { Place } from './place.model';
 import { AuthService } from '../auth/auth.service';
@@ -119,7 +119,15 @@ export class PlacesService {
   updatePlace(placeId: string, title: string, description: string) {
     let updatedPlaces: Place[];
     return this.places.pipe(
-      take(1), switchMap(places => {
+      take(1),
+      switchMap(places => {
+        if (!places || places.length <= 0) {
+          return this.fetchPlaces();
+        } else {
+          return of(places);
+        }
+      }),
+      switchMap(places => {
         const updatedPlaceIndex = places.findIndex(pl => pl.id === placeId);
         updatedPlaces = [...places];
         const oldPlace = updatedPlaces[updatedPlaceIndex];
@@ -137,7 +145,8 @@ export class PlacesService {
           `https://ionic-angular-app-ab6e9.firebaseio.com/offered-places/${placeId}.json`,
           { ...updatedPlaces[updatedPlaceIndex], id: null }
         )
-      }), tap(() => {
+      }),
+      tap(() => {
         this._places.next(updatedPlaces);
       })
     );
