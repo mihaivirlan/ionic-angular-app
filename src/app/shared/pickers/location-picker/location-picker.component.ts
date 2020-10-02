@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+
 import { MapModalComponent } from '../../map-modal/map-modal.component';
 
 @Component({
@@ -8,14 +9,16 @@ import { MapModalComponent } from '../../map-modal/map-modal.component';
   styleUrls: ['./location-picker.component.scss']
 })
 export class LocationPickerComponent implements OnInit {
+  constructor(private modalCtrl: ModalController) {}
 
-  constructor(private modalCtrl: ModalController) { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onPickLocation() {
-    this.modalCtrl.create({component: MapModalComponent})
+    this.modalCtrl.create({ component: MapModalComponent }).then(modalEl => {
+      modalEl.onDidDismiss().then(modalData => {
+        console.log(modalData.data);
+      });
+      modalEl.present();
+    });
   }
-
 }
