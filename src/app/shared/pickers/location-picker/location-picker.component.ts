@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { MapModalComponent } from '../../map-modal/map-modal.component';
 import { environment } from '../../../../environments/environment';
 import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-location-picker',
@@ -23,7 +24,9 @@ export class LocationPickerComponent implements OnInit {
           return;
         }
         this.getAddress(modalData.data.lat, modalData.data.lng).subscribe(
-          () => {}
+          (address) => {
+            console.log(address);
+          }
         );
       });
       modalEl.present();
@@ -31,13 +34,19 @@ export class LocationPickerComponent implements OnInit {
   }
 
   private getAddress(lat: number, lng: number) {
-    return this.http.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${
-        environment.googleMapsAPIKey
+    return this.http
+      .get<any>(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${
+          environment.googleMapsAPIKey
       }`  
     )
-    .pipe(map(geoData => {
-      console.log(geoData);
-    }));
+    .pipe(
+      map(geoData => {
+        if (!geoData || !geoData.results || geoData.results.length === 0) {
+          return null;
+        }
+        return geoData.results[0].formatted_address;
+      })
+    );
   }
 }
