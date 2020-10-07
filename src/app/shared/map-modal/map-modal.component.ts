@@ -23,7 +23,8 @@ export class MapModalComponent implements OnInit, AfterViewInit {
     this.getGoogleMaps().then(googleMaps => {
       const mapEl = this.mapElementRef.nativeElement;
       const map = new googleMaps.Map(mapEl, {
-        center: { lat: -34.397, lng: 150.644 },
+        // center: { lat: -34.397, lng: 150.644 },
+        center: { lat: 47.3651, lng: 28.7275 },
         zoom: 16
       });
       googleMaps.event.addListenerOnce(map, 'idle', () => {
