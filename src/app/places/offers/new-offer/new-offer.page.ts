@@ -53,6 +53,10 @@ export class NewOfferPage implements OnInit {
     this.form.patchValue({ location: location });
   }
 
+  onImagePicked(imageData: string) {
+
+  }
+
   onCreateOffer() {
     if (!this.form.valid) {
       return;
@@ -67,7 +71,7 @@ export class NewOfferPage implements OnInit {
           .addPlace(
             this.form.value.title,
             this.form.value.description,
-            + this.form.value.price,
+            +this.form.value.price,
             new Date(this.form.value.dateFrom),
             new Date(this.form.value.dateTo),
             this.form.value.location
