@@ -31,6 +31,8 @@
     "@ionic/pwa-elements": "^3.0.1",
     "core-js": "^2.5.4",
     "firebase-functions": "^3.11.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.29"
   },
