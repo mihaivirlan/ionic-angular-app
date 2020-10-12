@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { user } from 'firebase-functions/lib/providers/auth';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { User } from './user.model';
@@ -54,7 +53,7 @@ export class AuthService {
       `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${
         environment.firebaseAPIKey
       }`, { email: email, password: password, returnSecureToken: true }
-    )
+    ).pipe(tap(this.setUserData.bind(this)));
   }
 
   login(email: string, password: string) {
@@ -62,10 +61,24 @@ export class AuthService {
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${
         environment.firebaseAPIKey
       }`, { email: email, password: password }
-    )
+    ).pipe(tap(this.setUserData.bind(this)));
   }
 
   logout() {
     this._user.next(null);
+  }
+
+  private setUserData(userData: AuthResponseData) {
+    const expirationTime = new Date(
+      new Date().getTime() + (+userData.expiresIn * 1000)
+    );
+    this._user.next(
+      new User(
+        userData.localId, 
+        userData.email, 
+        userData.idToken,
+        expirationTime
+      )
+    );
   }
 }
