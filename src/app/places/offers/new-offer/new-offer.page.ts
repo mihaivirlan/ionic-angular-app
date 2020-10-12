@@ -64,10 +64,7 @@ export class NewOfferPage implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      location: new FormControl(
-        null, 
-        { validators: [Validators.required] }
-      ),
+      location: new FormControl(null, { validators: [Validators.required] }),
       image: new FormControl(null)
     });
   }
@@ -80,7 +77,10 @@ export class NewOfferPage implements OnInit {
     let imageFile;
     if (typeof imageData === 'string') {
       try {
-        imageFile = base64toBlob(imageData.replace('data:image/jpeg;base64,', ''), 'image/jpeg');
+        imageFile = base64toBlob(
+          imageData.replace('data:image/jpeg;base64,', ''),
+          'image/jpeg'
+        );
       } catch (error) {
         console.log(error);
         return;
@@ -95,32 +95,32 @@ export class NewOfferPage implements OnInit {
     if (!this.form.valid || !this.form.get('image').value) {
       return;
     }
-    console.log(this.form.value);
     this.loadingCtrl
       .create({
         message: 'Creating place...'
       })
       .then(loadingEl => {
         loadingEl.present();
-        this.placesService.uploadImage(this.form.get('image').value)
-        .pipe(switchMap(uploadRes => {
-         return this.placesService
-          .addPlace(
-              this.form.value.title,
-              this.form.value.description,
-              +this.form.value.price,
-              new Date(this.form.value.dateFrom),
-              new Date(this.form.value.dateTo),
-              this.form.value.location,
-              uploadRes.imageUrl
-            );
-          })
-        )
-        .subscribe(() => {
-          loadingEl.dismiss();
-          this.form.reset();
-          this.router.navigate(['/places/tabs/offers']);
-        });
+        this.placesService
+          .uploadImage(this.form.get('image').value)
+          .pipe(
+            switchMap(uploadRes => {
+              return this.placesService.addPlace(
+                this.form.value.title,
+                this.form.value.description,
+                +this.form.value.price,
+                new Date(this.form.value.dateFrom),
+                new Date(this.form.value.dateTo),
+                this.form.value.location,
+                uploadRes.imageUrl
+              );
+            })
+          )
+          .subscribe(() => {
+            loadingEl.dismiss();
+            this.form.reset();
+            this.router.navigate(['/places/tabs/offers']);
+          });
       });
   }
 }
