@@ -6,7 +6,6 @@ import { Plugins } from '@capacitor/core';
 
 import { environment } from '../../environments/environment';
 import { User } from './user.model';
-import { user } from 'firebase-functions/lib/providers/auth';
 
 export interface AuthResponseData {
   kind: string;
@@ -97,7 +96,7 @@ export class AuthService {
     return this.http.post<AuthResponseData>(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${
         environment.firebaseAPIKey
-      }`, { email: email, password: password }
+      }`, { email: email, password: password, returnSecureToken: true }
     ).pipe(tap(this.setUserData.bind(this)));
   }
 
@@ -137,6 +136,6 @@ export class AuthService {
         tokenExpirationDate: tokenExpirationDate,
         email: email
       });
-      Plugins.Storage.set({ key: 'authData', value: data })
+      Plugins.Storage.set({key: 'authData', value: data})
     };
 }
