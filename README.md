@@ -1,4 +1,4 @@
-# Clone this repository on your local machine
+## Clone this repository on your local machine
 git clone https://github.com/mihaivirlan/ionic-angular-app.git
 
 # After cloned it successfully, move inside project directory
