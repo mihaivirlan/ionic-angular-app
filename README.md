@@ -2,7 +2,7 @@
 git clone https://github.com/mihaivirlan/ionic-angular-app.git
 
 ## After cloned it successfully, move inside project directory
-Open your command-line/shell/terminal and type:
+Open your command-line/shell/terminal and type:<br />
 $ cd /path_where_are_downloaded_your_repository_after_cloned_it
 
 ## Start a local dev server for running your local downloaded app
