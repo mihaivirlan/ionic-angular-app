@@ -1,0 +1,5 @@
+node_modules
+environment.prod.ts
+environment.ts
+ionic-app.json
+www
