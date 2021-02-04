@@ -1,7 +1,0 @@
-{
-  "appId": "com.udemycourse.ionicangular",
-  "appName": "booking-app",
-  "bundledWebRuntime": false,
-  "webDir": "www",
-  "linuxAndroidStudioPath": "/snap/bin/android-studio"
-}
